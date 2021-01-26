@@ -93,7 +93,7 @@ main ENDP
 END
 
 comment $
-
+Alex is so cool and totally not going to murder my pet goat in dnd. he is safe and his name is jasper
 ~~~~~~~~~~~~~~~~~~~~~~
 Pick your lucky number:
 What is your question?
