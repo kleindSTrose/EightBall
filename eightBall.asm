@@ -37,8 +37,8 @@
 	rdtsc						;grab the executing core's cycle tick counter(stored in EDX:EAX)
 
 	; Convert number to the appropriate range:
-	SHL rdx, 32					;shift RDX left by 4 bytes(RDTSC stores in lower half, need lower in upper)
-	ADD rax, rdx				;add EDX as upper to EAX for 64bit value
+	shl rdx, 32					;shift RDX left by 4 bytes(RDTSC stores in lower half, need lower in upper)
+	add rax, rdx				;add EDX as upper to EAX for 64bit value
 
 	xor rdx, rdx				;zero out RDX
 
