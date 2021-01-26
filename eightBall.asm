@@ -19,6 +19,7 @@
 	prompt2 byte  "What is your question?  ", 0
 	prompt3 byte  "Magic 8 Ball says:  ", 0
 	keyVal QWORD ?
+	question byte 40 DUP(0)
 	msg1  byte "Nope.",0
 	msg2 byte "Reply hazy, try again",0
 	msg3 byte "Very doubtful", 0
@@ -29,18 +30,20 @@
 	;Output message to ask for lucky number:
 	mov RDX, offset prompt1					;rdx=&prompt1
 	call WriteString						;cout<<rdx
+	call ReadInt64
 	call Crlf								;cout<<endl
 
 	; Determine random number:
-	mov rax, 0								;rax=0
-	call Randomize
-	call Random64
+	rdtsc						;grab the executing core's cycle tick counter(stored in EDX:EAX)
 
 	; Convert number to the appropriate range:
-	mov rbx, 5								;rbx=5
-	mov rdx, 0								;rdx-=0
+	SHL rdx, 32					;shift RDX left by 4 bytes(RDTSC stores in lower half, need lower in upper)
+	ADD rax, rdx				;add EDX as upper to EAX for 64bit value
 
-	div rbx									;rdx:rax=rax/rbx
+	xor rdx, rdx				;zero out RDX
+
+	mov rbx, 5
+	div rbx						;max possible outputs is 5
 	mov keyVal, rdx
 
 
@@ -48,6 +51,12 @@
 	mov rdx, offset prompt2					;rdx=&prompt2
 	call WriteString						;cout<<rdx
 	call Crlf								;cout<<endl
+
+	lea rdx, question
+	mov rcx, 39					;max of 39 allowable characters(must be null terminated)
+	call ReadString
+	call Crlf
+
 	;Output message to to answer question:
 	mov rdx, offset prompt3					;rdx=&prompt3
 	call WriteString						;cout<<rdx
@@ -131,4 +140,5 @@ Press any key to close this window . . .
 
 
 
+$
 $
